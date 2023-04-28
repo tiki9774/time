@@ -16,10 +16,10 @@ end
 L_f = 10 .^ ( L ./ 10);
 phasenoise_contributions = zeros(length(f)-1,1);
 for ii= 1:(length(f)-1)
-    phasenoise_contributions(ii) = 0.5 * (f(ii+1) - f(ii)) * (L_f(ii+1) + L_f(ii))
+    phasenoise_contributions(ii) =(f(ii+1) - f(ii)) * (L_f(ii+1) + L_f(ii));
 end
 
 
 
-sigma_phasenoise = sqrt(sum(phasenoise_contributions))
+sigma_phasenoise = sqrt(sum(phasenoise_contributions));
 end
