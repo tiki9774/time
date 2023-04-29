@@ -4,17 +4,17 @@ clear all;
 close all;
 clc;
 
-f = [.1 1 10 100 1e3 10e3 100e3];
-L = [-30 -50 -70 -113 -128 -135 -140];
+f = [1 10 100 1e3 10e3 100e3 100e4];
+L = [-50 -70 -113 -128 -135 -140 -140];
 
 
-sigma = L_F_2_sigma(f,L)   %radians
+sigma = L_F_2_sigma(f,L)/10e6   %radians
 
 
 %%
-f0 = 1e6;
-fs = f0*5;
-t = 0:1/fs:1;
+f0 = 10e6;
+fs = f0*2.5;
+t = 0:1/fs:10;
 
 phase = 2*pi*f0*t;
 n = sigma .* randn(1,length(t));
@@ -50,9 +50,9 @@ ylabel("Power/Frequency (dB/Hz)")
 [M,I] = max(psdx);
 psdx = psdx/ M;
 psdx = psdx(I:end);
-freq = freq(I-1) - freq(I:end);
+freq = freq(I:end) - freq(I);
 figure;
-plot(10*log10(freq),10*log10(psdx))
+plot(pow2db(freq),pow2db(psdx))
 grid on;
 
 % %%
