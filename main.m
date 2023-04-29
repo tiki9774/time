@@ -8,7 +8,7 @@ f = [1 10 100 1e3 10e3 100e3 100e4];
 L = [-50 -70 -113 -128 -135 -140 -140];
 
 
-sigma = L_F_2_sigma(f,L)/10e6   %radians
+sigma = L_F_2_sigma(f,L)/2/pi/10e6   %radians
 
 
 %%
@@ -52,7 +52,7 @@ psdx = psdx/ M;
 psdx = psdx(I:end);
 freq = freq(I:end) - freq(I);
 figure;
-plot(pow2db(freq),pow2db(psdx))
+plot(freq,pow2db(psdx))
 grid on;
 
 % %%
