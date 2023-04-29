@@ -8,7 +8,7 @@ f = [1 10 100 1e3 10e3 100e3 100e4];
 L = [-50 -70 -113 -128 -135 -140 -140];
 
 
-sigma = L_F_2_sigma(f,L)/10e6   %radians
+sigma = L_F_2_sigma(f,L)/2/pi/10e6   %radians
 
 
 %%
@@ -18,11 +18,12 @@ t = 0:1/fs:10;
 
 phase = 2*pi*f0*t;
 n = sigma .* randn(1,length(t));
-phase_n = zeros(1,length(t));
-dt = 1/fs;
-for ii = 2:length(t)
-    phase_n(ii) = phase_n(ii-1) + 2*pi*f0*dt+(n(ii));
-end
+% phase_n = zeros(1,length(t));
+% dt = 1/fs;
+% for ii = 2:length(t)
+%     phase_n(ii) = phase_n(ii-1) + 2*pi*f0*dt+(n(ii));
+% end
+phase_n = sin(2*pi*f0*t+)
 [p,S] = polyfit(t,phase_n,1);
 tmp = polyval(p,t);
 % figure
@@ -52,7 +53,7 @@ psdx = psdx/ M;
 psdx = psdx(I:end);
 freq = freq(I:end) - freq(I);
 figure;
-plot(pow2db(freq),pow2db(psdx))
+plot(freq,pow2db(psdx))
 grid on;
 
 % %%

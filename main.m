@@ -14,15 +14,16 @@ sigma = L_F_2_sigma(f,L)/2/pi/10e6   %radians
 %%
 f0 = 10e6;
 fs = f0*2.5;
-t = 0:1/fs:10;
+t = 0:1/fs:1;
 
 phase = 2*pi*f0*t;
 n = sigma .* randn(1,length(t));
-phase_n = zeros(1,length(t));
-dt = 1/fs;
-for ii = 2:length(t)
-    phase_n(ii) = phase_n(ii-1) + 2*pi*f0*dt+(n(ii));
-end
+% phase_n = zeros(1,length(t));
+% dt = 1/fs;
+% for ii = 2:length(t)
+%     phase_n(ii) = phase_n(ii-1) + 2*pi*f0*dt+(n(ii));
+% end
+phase_n = phase+n;
 [p,S] = polyfit(t,phase_n,1);
 tmp = polyval(p,t);
 % figure
@@ -46,13 +47,13 @@ grid on
 title("Periodogram Using FFT")
 xlabel("Frequency (Hz)")
 ylabel("Power/Frequency (dB/Hz)")
-
+%%
 [M,I] = max(psdx);
 psdx = psdx/ M;
 psdx = psdx(I:end);
 freq = freq(I:end) - freq(I);
 figure;
-plot(freq,pow2db(psdx))
+plot(pow2db(freq),pow2db(psdx))
 grid on;
 
 % %%
