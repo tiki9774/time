@@ -31,8 +31,10 @@ tmp = polyval(p,t);
 % hold on;
 % plot(t,sin(tmp))
 
-% figure
-% plot(phase_n-phase)
+figure
+plot(phase_n-phase)
+hold on;
+plot(n)
 
 v = sin(phase_n);
 N = length(v);
