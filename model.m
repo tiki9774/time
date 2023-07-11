@@ -5,40 +5,29 @@ clc,clear,close all
 rng(100) %%comment out to get different random results each time
 
 
-m0 = [0,0];
-P0 = eye(2);
+m0 = [0,0,0];
+P0 = eye(3);
 
-% %%%Look at the initial state pdf (multivariate Gaussian)
-% [X,Y] = meshgrid([-20:0.1:30],[-10:0.1:10]);
-% XY = [X(:),Y(:)];
-% pxy0 = reshape( mvnpdf(XY,m0,C0) , size(X)); 
-% figure(),
-% surf(X,Y,pxy0,'EdgeColor','none'), 
-% view(2), xlabel('\xi_0','FontSize',18),ylabel('\xi_0','FontSize',18),
-% title('p(\xi_0)','FontSize',18)
 
 %%CT Model spec
-A = [0 1;
-     0 0];
+A = [0 1 0;
+     0 0 1;
+     0 0 0];
 B = [0;1];
 Gamma = [0;1];
 C = [1 0];
-Qtilde = 1; %AWG process noise intensity: (m/s^2)^2
-Rtilde = .5; %AWG measurement noise intensity: m^2
+Qtilde = eye(3); %AWG process noise intensity: fix later,  Q= psd
+Rtilde = 50e-9; %AWG measurement noise intensity: seconds, double check
 CTsys = ss(A,B,C,0);  %%
 
 %%DT model conversion
-deltaT = 0.1
+deltaT = 1; %second, maybe 1000?
 %%Use c2d to cheat/convert parts of model
-% %F = [1 deltaT;
-% %     0  1];
-% %G = [0.5*dt^2;
-% %       dt];
-% %H = C;
+
 DTsys = c2d(CTsys,deltaT,'zoh'); %%
-F = DTsys.a;
-G = DTsys.b;
-H = DTsys.c;
+F = [1 tau tau^2/2; 0 1 tau; 0 0 1]; %DT space matrix
+G = eye(3)
+H = [-1 0 0 1 0 0];
 %%Use Van Loan method to find covariance of process noise
 M = deltaT*[-A, Gamma*Qtilde*Gamma';
             zeros(size(A)), A']
