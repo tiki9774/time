@@ -8,23 +8,23 @@ rng(100) %%comment out to get different random results each time
 m0 = [0,0,0];
 P0 = eye(3);
 
-
+tau = 1;
 %%CT Model spec
 A = [0 1 0;
      0 0 1;
      0 0 0];
 B = [0;1];
-Gamma = [0;1];
+Gamma = [0;0;1]; %look into vanloan method, and psd
 C = [1 0];
 Qtilde = eye(3); %AWG process noise intensity: fix later,  Q= psd
 Rtilde = 50e-9; %AWG measurement noise intensity: seconds, double check
-CTsys = ss(A,B,C,0);  %%
+% CTsys = ss(A,B,C,0);  %%
 
 %%DT model conversion
 deltaT = 1; %second, maybe 1000?
 %%Use c2d to cheat/convert parts of model
 
-DTsys = c2d(CTsys,deltaT,'zoh'); %%
+% DTsys = c2d(CTsys,deltaT,'zoh'); %%
 F = [1 tau tau^2/2; 0 1 tau; 0 0 1]; %DT space matrix
 G = eye(3)
 H = [-1 0 0 1 0 0];
